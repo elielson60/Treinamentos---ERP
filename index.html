@@ -511,9 +511,17 @@
         </select>
       </div>
       <div class="fg">
-        <label>Responsável</label>
-        <input type="text" id="f-auth" placeholder="Ex: Marcio Venicius">
+        <label>Tipo de material</label>
+        <select id="f-tipo">
+          <option value="video">🎥 Gravação de vídeo</option>
+          <option value="pdf">📄 PDF / Documento</option>
+          <option value="">Outro</option>
+        </select>
       </div>
+    </div>
+    <div class="fg">
+      <label>Responsável</label>
+      <input type="text" id="f-auth" placeholder="Ex: Marcio Venicius">
     </div>
     <div class="modal-footer">
       <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
@@ -552,7 +560,24 @@ let editId    = null;
 let activeCat = 'Todos';
 
 /* ── DADOS SEED ── */
+const SEED_VERSION = 4;
 const SEED = [
+  {
+    id: 6,
+    title: '1ª Apresentação do Sistema ERP Veica',
+    url: 'https://drive.google.com/file/d/1pl3kTYUUMs6N5lE-kaC68I49Ggwu15Yi/view?usp=sharing',
+    desc: 'Primeira apresentação oficial do sistema ERP Veica Tecnologia para a equipe de implantação',
+    cat: 'Geral', auth: 'Elielson', date: '2026-06-22',
+    tipo: 'video'
+  },
+  {
+    id: 7,
+    title: 'Docs Diversos — Materiais e PDFs',
+    url: 'https://drive.google.com/drive/folders/1Kbnn865Rljv69P3aG2EuqQsH_6K4EfG_?usp=sharing',
+    desc: 'Pasta com documentos diversos, manuais e materiais em PDF da implantação ERP Veica',
+    cat: 'Geral', auth: 'Elielson', date: '2026-06-22',
+    tipo: 'pasta'
+  },
   {
     id: 1,
     title: '1º Treinamento Cargas — Martins Rent a Car',
@@ -594,12 +619,31 @@ const SEED = [
 const ICONS  = { Cargas:'🚛', Frotas:'🚗', Financeiro:'💰', Operacional:'⚙️', 'TI / Sistema':'💻', Geral:'📋' };
 const BG     = { Cargas:'#faeeda', Frotas:'#e1f5ee', Financeiro:'#e6f1fb', Operacional:'#eeedfe', 'TI / Sistema':'#fbeaf0', Geral:'#f1efe8' };
 const BADGE  = { Cargas:'b-cargas', Frotas:'b-frotas', Financeiro:'b-fin', Operacional:'b-op', 'TI / Sistema':'b-ti', Geral:'b-geral' };
+const TIPO_ICON  = { pdf:'📄', video:'🎥', pasta:'📁' };
+const TIPO_STYLE = {
+  pdf:   'background:#fcebeb;color:#a32d2d;border-radius:20px;padding:2px 9px;font-size:11px;font-weight:500;flex-shrink:0;',
+  video: 'background:#e1f5ee;color:#0f6e56;border-radius:20px;padding:2px 9px;font-size:11px;font-weight:500;flex-shrink:0;',
+  pasta: 'background:#faeeda;color:#854f0b;border-radius:20px;padding:2px 9px;font-size:11px;font-weight:500;flex-shrink:0;'
+};
 
 /* ── STORAGE ── */
 function getData() {
   try {
+    const ver = parseInt(localStorage.getItem(KEY + '_ver') || '0');
+    if (ver < SEED_VERSION) {
+      localStorage.setItem(KEY + '_ver', SEED_VERSION);
+      return initSeed();
+    }
     const d = JSON.parse(localStorage.getItem(KEY));
-    return (d && d.length) ? d : initSeed();
+    if (!d || !d.length) return initSeed();
+    if (SEED.length > d.length) {
+      const ids = new Set(d.map(x => x.id));
+      const novos = SEED.filter(x => !ids.has(x.id));
+      const atualizado = [...d, ...novos];
+      setData(atualizado);
+      return atualizado;
+    }
+    return d;
   } catch { return initSeed(); }
 }
 function initSeed() { localStorage.setItem(KEY, JSON.stringify(SEED)); return [...SEED]; }
@@ -638,6 +682,7 @@ function render() {
            <button class="icon-btn del" onclick="delItem(${l.id})" title="Excluir"><i class="ti ti-trash"></i></button>`
         : '';
       const dateStr = l.date ? new Date(l.date + 'T12:00:00').toLocaleDateString('pt-BR') : '';
+      const tipoBadge = l.tipo ? `<span style="${TIPO_STYLE[l.tipo]||''}">${TIPO_ICON[l.tipo]||''} ${l.tipo.toUpperCase()}</span>` : '';
       return `<div class="link-card">
         <div class="link-icon" style="background:${BG[l.cat]||'#f1efe8'}">${ICONS[l.cat]||'📋'}</div>
         <div class="link-body">
@@ -646,6 +691,7 @@ function render() {
           <div class="link-meta">${l.auth ? l.auth + ' &middot; ' : ''}${dateStr}</div>
         </div>
         <span class="badge ${BADGE[l.cat]||'b-geral'}">${l.cat}</span>
+        ${tipoBadge}
         <div class="card-actions">
           ${adminBtns}
           <button class="btn-open" onclick="go('${l.url}')">
@@ -673,7 +719,8 @@ function openModal() {
   editId = null;
   document.getElementById('modal-h').textContent = 'Novo material de treinamento';
   ['f-title','f-url','f-desc','f-auth'].forEach(i => document.getElementById(i).value = '');
-  document.getElementById('f-cat').value = 'Cargas';
+  document.getElementById('f-cat').value  = 'Cargas';
+  document.getElementById('f-tipo').value = 'video';
   document.getElementById('modal-ov').style.display = 'flex';
   setTimeout(() => document.getElementById('f-title').focus(), 80);
 }
@@ -689,12 +736,14 @@ function save() {
     if (i >= 0) d[i] = { ...d[i], title, url,
       desc: document.getElementById('f-desc').value.trim(),
       cat:  document.getElementById('f-cat').value,
+      tipo: document.getElementById('f-tipo').value,
       auth: document.getElementById('f-auth').value.trim()
     };
   } else {
     d.push({ id: Date.now(), title, url,
       desc: document.getElementById('f-desc').value.trim(),
       cat:  document.getElementById('f-cat').value,
+      tipo: document.getElementById('f-tipo').value,
       auth: document.getElementById('f-auth').value.trim(),
       date: new Date().toISOString().slice(0, 10)
     });
@@ -712,6 +761,7 @@ function editItem(id) {
   document.getElementById('f-url').value   = l.url;
   document.getElementById('f-desc').value  = l.desc || '';
   document.getElementById('f-cat').value   = l.cat;
+  document.getElementById('f-tipo').value  = l.tipo || 'video';
   document.getElementById('f-auth').value  = l.auth || '';
   document.getElementById('modal-ov').style.display = 'flex';
 }
