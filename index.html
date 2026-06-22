@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Treinamentos ERP Veica — Grupo Martins</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.11.0/dist/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue-dark: #1a3a6e;
+    --blue-mid: #2a5298;
+    --blue-light: #e6f1fb;
+    --green-light: #e1f5ee;
+    --green-dark: #0f6e56;
+    --amber-light: #faeeda;
+    --amber-dark: #854f0b;
+    --pink-light: #fbeaf0;
+    --pink-dark: #993556;
+    --gray-bg: #f5f6f8;
+    --gray-card: #ffffff;
+    --gray-border: #e2e5ea;
+    --gray-border-hover: #c5cad3;
+    --text-primary: #1a1d23;
+    --text-secondary: #5a6072;
+    --text-tertiary: #9aa1b0;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--gray-bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  /* ── HEADER ── */
+  .top-bar {
+    background: var(--blue-dark);
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  .top-bar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .top-bar-brand span {
+    font-size: 12px;
+    opacity: 0.65;
+    font-weight: 400;
+  }
+  .top-bar-logo {
+    width: 32px;
+    height: 32px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #fff;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+  }
+  .admin-indicator {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: none;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+  .admin-indicator:hover { background: rgba(255,255,255,0.25); }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--gray-card);
+    border: 1px solid var(--gray-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .hero-icon {
+    width: 52px;
+    height: 52px;
+    background: var(--blue-dark);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #fff;
+    font-size: 24px;
+  }
+  .hero h1 { font-size: 18px; font-weight: 600; margin-bottom: 3px; }
+  .hero p { font-size: 13px; color: var(--text-secondary); }
+
+  /* ── STATS ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 1.25rem;
+  }
+  .stat {
+    background: var(--gray-card);
+    border: 1px solid var(--gray-border);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    text-align: center;
+  }
+  .stat-num { font-size: 26px; font-weight: 600; color: var(--blue-dark); }
+  .stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .search-wrap {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+  }
+  .search-wrap i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    font-size: 17px;
+  }
+  .search-box {
+    width: 100%;
+    padding: 9px 12px 9px 38px;
+    border: 1px solid var(--gray-border);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    background: var(--gray-card);
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-box:focus { border-color: var(--blue-mid); }
+  .btn-add {
+    background: var(--blue-dark);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 9px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .btn-add:hover { background: var(--blue-mid); }
+
+  /* ── CATEGORY TABS ── */
+  .cat-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+  .cat-tab {
+    border: 1px solid var(--gray-border);
+    border-radius: 20px;
+    padding: 5px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    background: var(--gray-card);
+    color: var(--text-secondary);
+    transition: all 0.15s;
+    font-weight: 400;
+  }
+  .cat-tab:hover { border-color: var(--gray-border-hover); color: var(--text-primary); }
+  .cat-tab.active {
+    background: var(--blue-dark);
+    border-color: var(--blue-dark);
+    color: #fff;
+    font-weight: 500;
+  }
+
+  /* ── LINK CARDS ── */
+  .links-grid { display: flex; flex-direction: column; gap: 10px; }
+  .link-card {
+    background: var(--gray-card);
+    border: 1px solid var(--gray-border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .link-card:hover {
+    border-color: var(--gray-border-hover);
+    box-shadow: var(--shadow-sm);
+  }
+  .link-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .link-body { flex: 1; min-width: 0; }
+  .link-title {
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .link-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .link-meta { font-size: 11px; color: var(--text-tertiary); margin-top: 3px; }
+  .badge {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .b-cargas  { background: var(--amber-light); color: var(--amber-dark); }
+  .b-frotas  { background: var(--green-light); color: var(--green-dark); }
+  .b-fin     { background: var(--blue-light);  color: #185fa5; }
+  .b-op      { background: #eeedfe;            color: #534ab7; }
+  .b-ti      { background: var(--pink-light);  color: var(--pink-dark); }
+  .b-geral   { background: #f1efe8;            color: #5f5e5a; }
+
+  .card-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .icon-btn {
+    background: transparent;
+    border: 1px solid var(--gray-border);
+    border-radius: var(--radius-md);
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.15s;
+  }
+  .icon-btn:hover { background: var(--gray-bg); color: var(--text-primary); border-color: var(--gray-border-hover); }
+  .icon-btn.del:hover { background: #fcebeb; color: #a32d2d; border-color: #f7c1c1; }
+  .btn-open {
+    background: var(--blue-dark);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 7px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+  .btn-open:hover { background: var(--blue-mid); }
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary);
+  }
+  .empty-state i { font-size: 40px; display: block; margin-bottom: 10px; color: var(--text-tertiary); }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  .btn-area-admin {
+    background: transparent;
+    border: 1px solid var(--gray-border);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text-tertiary);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s;
+  }
+  .btn-area-admin:hover { border-color: var(--gray-border-hover); color: var(--text-secondary); }
+
+  /* ── MODALS ── */
+  .overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10,14,26,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+  }
+  .modal {
+    background: var(--gray-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-border);
+    padding: 1.75rem;
+    width: 100%;
+    max-width: 460px;
+    box-shadow: var(--shadow-md);
+  }
+  .modal h2 { font-size: 17px; font-weight: 600; margin-bottom: 1.5rem; }
+  .fg { margin-bottom: 1rem; }
+  .fg label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 5px; font-weight: 500; }
+  .fg input,
+  .fg select,
+  .fg textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--gray-border);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    background: var(--gray-card);
+    color: var(--text-primary);
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.15s;
+  }
+  .fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--blue-mid); }
+  .fg textarea { height: 70px; resize: vertical; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 1.5rem; }
+  .btn-cancel {
+    background: transparent;
+    border: 1px solid var(--gray-border);
+    border-radius: var(--radius-md);
+    padding: 9px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-primary);
+    transition: background 0.15s;
+  }
+  .btn-cancel:hover { background: var(--gray-bg); }
+  .btn-save {
+    background: var(--blue-dark);
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 9px 20px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.15s;
+  }
+  .btn-save:hover { background: var(--blue-mid); }
+  .err-msg { color: #a32d2d; font-size: 13px; margin-top: 6px; display: none; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--blue-dark);
+    color: #fff;
+    border-radius: var(--radius-md);
+    padding: 12px 18px;
+    font-size: 14px;
+    z-index: 2000;
+    display: none;
+    box-shadow: var(--shadow-md);
+    animation: slideUp 0.2s ease;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .stats-row { grid-template-columns: repeat(3, 1fr); }
+    .link-title { font-size: 13px; }
+    .badge { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-brand">
+    <div class="top-bar-logo">ERP<br>V</div>
+    Portal de Treinamentos
+    <span>/ Grupo Martins</span>
+  </div>
+  <div class="admin-indicator" id="admin-indicator" onclick="lockAdmin()">
+    <i class="ti ti-shield-check"></i> Admin · Clique para sair
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-icon"><i class="ti ti-school"></i></div>
+    <div>
+      <h1>Treinamentos ERP Veica Tecnologia</h1>
+      <p>Gravações das sessões de implantação — Martins Rent a Car · Acesso centralizado para toda a equipe</p>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num" id="s-total">5</div><div class="stat-label">Gravações</div></div>
+    <div class="stat"><div class="stat-num" id="s-cats">3</div><div class="stat-label">Módulos</div></div>
+    <div class="stat"><div class="stat-num" id="s-week">5</div><div class="stat-label">Esta semana</div></div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="search-wrap">
+      <i class="ti ti-search"></i>
+      <input class="search-box" type="text" id="search" placeholder="Buscar treinamento ou módulo..." oninput="render()">
+    </div>
+    <button class="btn-add" id="btn-add" onclick="openModal()">
+      <i class="ti ti-plus"></i> Adicionar material
+    </button>
+  </div>
+
+  <!-- CATEGORY TABS -->
+  <div class="cat-tabs" id="cat-tabs"></div>
+
+  <!-- LINKS -->
+  <div class="links-grid" id="links-grid"></div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <button class="btn-area-admin" id="btn-area-admin" onclick="toggleAdmin()">
+      <i class="ti ti-shield"></i> Área admin
+    </button>
+  </div>
+
+</div><!-- /page -->
+
+<!-- MODAL: NOVO/EDITAR MATERIAL -->
+<div class="overlay" id="modal-ov">
+  <div class="modal">
+    <h2 id="modal-h">Novo material de treinamento</h2>
+    <div class="fg">
+      <label>Título</label>
+      <input type="text" id="f-title" placeholder="Ex: 3º Treinamento Cargas — Martins Rent a Car">
+    </div>
+    <div class="fg">
+      <label>Link do Google Drive</label>
+      <input type="text" id="f-url" placeholder="https://drive.google.com/file/d/...">
+    </div>
+    <div class="fg">
+      <label>Descrição</label>
+      <textarea id="f-desc" placeholder="Breve descrição do conteúdo desta gravação"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label>Módulo</label>
+        <select id="f-cat">
+          <option value="Cargas">Cargas</option>
+          <option value="Frotas">Frotas</option>
+          <option value="Financeiro">Financeiro</option>
+          <option value="Operacional">Operacional</option>
+          <option value="TI / Sistema">TI / Sistema</option>
+          <option value="Geral">Geral</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Responsável</label>
+        <input type="text" id="f-auth" placeholder="Ex: Marcio Venicius">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-save" onclick="save()">Salvar material</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SENHA ADMIN -->
+<div class="overlay" id="pass-ov">
+  <div class="modal">
+    <h2><i class="ti ti-shield" style="color:var(--blue-dark);vertical-align:-2px;margin-right:6px"></i>Acesso administrativo</h2>
+    <div class="fg">
+      <label>Senha de administrador</label>
+      <input type="password" id="pass-in" placeholder="Digite a senha" onkeydown="if(event.key==='Enter')checkPass()">
+      <div class="err-msg" id="pass-err">Senha incorreta. Tente novamente.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closePass()">Cancelar</button>
+      <button class="btn-save" onclick="checkPass()">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── CONFIG ── */
+const KEY  = 'veica_portal_v3';
+const PWD  = 'Martins@2024';
+
+/* ── STATE ── */
+let isAdmin   = false;
+let editId    = null;
+let activeCat = 'Todos';
+
+/* ── DADOS SEED ── */
+const SEED = [
+  {
+    id: 1,
+    title: '1º Treinamento Cargas — Martins Rent a Car',
+    url: 'https://drive.google.com/file/d/1thQQvpfYmU0KBK7NDyVOaSxrU4A7EDGs/view?usp=sharing',
+    desc: 'Gravação da primeira sessão de treinamento do módulo de Cargas',
+    cat: 'Cargas', auth: 'Marcio Venicius', date: '2026-06-15'
+  },
+  {
+    id: 2,
+    title: '2º Treinamento Cargas — Martins Rent a Car',
+    url: 'https://drive.google.com/file/d/1L1t_34towgxEA0KVxEWLGya_UldR93AB/view?usp=sharing',
+    desc: 'Gravação da segunda sessão de treinamento do módulo de Cargas',
+    cat: 'Cargas', auth: 'Marcio Venicius', date: '2026-06-17'
+  },
+  {
+    id: 3,
+    title: '1º Treinamento Frota — Martins Rent a Car',
+    url: 'https://drive.google.com/file/d/1c_JdBicOfhFLrDZ-t5aa_tN7RFC8zbs2/view?usp=sharing',
+    desc: 'Gravação da primeira sessão de treinamento do módulo de Frotas',
+    cat: 'Frotas', auth: 'Marcio Venicius', date: '2026-06-16'
+  },
+  {
+    id: 4,
+    title: '2º Treinamento Frota — Martins Rent a Car',
+    url: 'https://drive.google.com/file/d/1D5-mWx-ah8yMEznStoVNLJGP-dzmkKol/view?usp=sharing',
+    desc: 'Gravação da segunda sessão de treinamento do módulo de Frotas',
+    cat: 'Frotas', auth: 'Marcio Venicius', date: '2026-06-18'
+  },
+  {
+    id: 5,
+    title: '2º Treinamento AG Financeiro — Martins Rent a Car',
+    url: 'https://drive.google.com/file/d/1ENTofJU3u8PBCTgLncPUPS2IR0oUrjfK/view?usp=drive_link',
+    desc: 'Gravação da segunda sessão de treinamento do módulo Financeiro (AG)',
+    cat: 'Financeiro', auth: 'Marcia Langbeck', date: '2026-06-18'
+  }
+];
+
+/* ── VISUAL MAP ── */
+const ICONS  = { Cargas:'🚛', Frotas:'🚗', Financeiro:'💰', Operacional:'⚙️', 'TI / Sistema':'💻', Geral:'📋' };
+const BG     = { Cargas:'#faeeda', Frotas:'#e1f5ee', Financeiro:'#e6f1fb', Operacional:'#eeedfe', 'TI / Sistema':'#fbeaf0', Geral:'#f1efe8' };
+const BADGE  = { Cargas:'b-cargas', Frotas:'b-frotas', Financeiro:'b-fin', Operacional:'b-op', 'TI / Sistema':'b-ti', Geral:'b-geral' };
+
+/* ── STORAGE ── */
+function getData() {
+  try {
+    const d = JSON.parse(localStorage.getItem(KEY));
+    return (d && d.length) ? d : initSeed();
+  } catch { return initSeed(); }
+}
+function initSeed() { localStorage.setItem(KEY, JSON.stringify(SEED)); return [...SEED]; }
+function setData(d) { localStorage.setItem(KEY, JSON.stringify(d)); }
+
+/* ── RENDER ── */
+function getUniqueCats() { return [...new Set(getData().map(l => l.cat))]; }
+
+function renderTabs() {
+  const cats = ['Todos', ...getUniqueCats()];
+  document.getElementById('cat-tabs').innerHTML = cats.map(c =>
+    `<button class="cat-tab${activeCat === c ? ' active' : ''}" onclick="setCat('${c}')">${c}</button>`
+  ).join('');
+}
+
+function setCat(c) { activeCat = c; renderTabs(); render(); }
+
+function render() {
+  const d   = getData();
+  const q   = document.getElementById('search').value.toLowerCase().trim();
+  const filtered = d.filter(l =>
+    (activeCat === 'Todos' || l.cat === activeCat) &&
+    (!q || l.title.toLowerCase().includes(q) || l.cat.toLowerCase().includes(q) || (l.auth||'').toLowerCase().includes(q) || (l.desc||'').toLowerCase().includes(q))
+  );
+
+  const grid = document.getElementById('links-grid');
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state">
+      <i class="ti ti-folder-off"></i>
+      Nenhum material encontrado para esta busca.
+    </div>`;
+  } else {
+    grid.innerHTML = filtered.map(l => {
+      const adminBtns = isAdmin
+        ? `<button class="icon-btn" onclick="editItem(${l.id})" title="Editar"><i class="ti ti-edit"></i></button>
+           <button class="icon-btn del" onclick="delItem(${l.id})" title="Excluir"><i class="ti ti-trash"></i></button>`
+        : '';
+      const dateStr = l.date ? new Date(l.date + 'T12:00:00').toLocaleDateString('pt-BR') : '';
+      return `<div class="link-card">
+        <div class="link-icon" style="background:${BG[l.cat]||'#f1efe8'}">${ICONS[l.cat]||'📋'}</div>
+        <div class="link-body">
+          <div class="link-title">${l.title}</div>
+          <div class="link-desc">${l.desc||''}</div>
+          <div class="link-meta">${l.auth ? l.auth + ' &middot; ' : ''}${dateStr}</div>
+        </div>
+        <span class="badge ${BADGE[l.cat]||'b-geral'}">${l.cat}</span>
+        <div class="card-actions">
+          ${adminBtns}
+          <button class="btn-open" onclick="go('${l.url}')">
+            <i class="ti ti-external-link"></i> Abrir
+          </button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  /* stats */
+  const week = new Date(); week.setDate(week.getDate() - 7);
+  document.getElementById('s-total').textContent = d.length;
+  document.getElementById('s-cats').textContent  = getUniqueCats().length;
+  document.getElementById('s-week').textContent  = d.filter(l => new Date(l.date) >= week).length;
+}
+
+/* ── ACTIONS ── */
+function go(url) {
+  if (url && url.startsWith('http')) window.open(url, '_blank');
+  else toast('Link não configurado');
+}
+
+function openModal() {
+  editId = null;
+  document.getElementById('modal-h').textContent = 'Novo material de treinamento';
+  ['f-title','f-url','f-desc','f-auth'].forEach(i => document.getElementById(i).value = '');
+  document.getElementById('f-cat').value = 'Cargas';
+  document.getElementById('modal-ov').style.display = 'flex';
+  setTimeout(() => document.getElementById('f-title').focus(), 80);
+}
+function closeModal() { document.getElementById('modal-ov').style.display = 'none'; }
+
+function save() {
+  const title = document.getElementById('f-title').value.trim();
+  const url   = document.getElementById('f-url').value.trim();
+  if (!title || !url) { toast('Título e link são obrigatórios'); return; }
+  const d = getData();
+  if (editId) {
+    const i = d.findIndex(l => l.id === editId);
+    if (i >= 0) d[i] = { ...d[i], title, url,
+      desc: document.getElementById('f-desc').value.trim(),
+      cat:  document.getElementById('f-cat').value,
+      auth: document.getElementById('f-auth').value.trim()
+    };
+  } else {
+    d.push({ id: Date.now(), title, url,
+      desc: document.getElementById('f-desc').value.trim(),
+      cat:  document.getElementById('f-cat').value,
+      auth: document.getElementById('f-auth').value.trim(),
+      date: new Date().toISOString().slice(0, 10)
+    });
+  }
+  setData(d); closeModal(); renderTabs(); render();
+  toast(editId ? 'Material atualizado!' : 'Material adicionado com sucesso!');
+}
+
+function editItem(id) {
+  const l = getData().find(x => x.id === id);
+  if (!l) return;
+  editId = id;
+  document.getElementById('modal-h').textContent = 'Editar material';
+  document.getElementById('f-title').value = l.title;
+  document.getElementById('f-url').value   = l.url;
+  document.getElementById('f-desc').value  = l.desc || '';
+  document.getElementById('f-cat').value   = l.cat;
+  document.getElementById('f-auth').value  = l.auth || '';
+  document.getElementById('modal-ov').style.display = 'flex';
+}
+
+function delItem(id) {
+  if (!confirm('Excluir este material de treinamento? Esta ação não pode ser desfeita.')) return;
+  setData(getData().filter(l => l.id !== id));
+  renderTabs(); render(); toast('Material removido.');
+}
+
+/* ── ADMIN ── */
+function toggleAdmin() {
+  if (isAdmin) { lockAdmin(); return; }
+  document.getElementById('pass-in').value = '';
+  document.getElementById('pass-err').style.display = 'none';
+  document.getElementById('pass-ov').style.display = 'flex';
+  setTimeout(() => document.getElementById('pass-in').focus(), 80);
+}
+function closePass() { document.getElementById('pass-ov').style.display = 'none'; }
+function checkPass() {
+  if (document.getElementById('pass-in').value === PWD) {
+    isAdmin = true;
+    closePass();
+    document.getElementById('admin-indicator').style.display = 'flex';
+    document.getElementById('btn-add').style.display = 'flex';
+    document.getElementById('btn-area-admin').style.display = 'none';
+    render(); toast('Modo administrador ativado.');
+  } else {
+    document.getElementById('pass-err').style.display = 'block';
+  }
+}
+function lockAdmin() {
+  isAdmin = false;
+  document.getElementById('admin-indicator').style.display = 'none';
+  document.getElementById('btn-add').style.display = 'none';
+  document.getElementById('btn-area-admin').style.display = 'inline-flex';
+  render(); toast('Modo administrador desativado.');
+}
+
+/* ── TOAST ── */
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.style.display = 'none', 2800);
+}
+
+/* ── CLOSE ON BACKDROP ── */
+document.getElementById('modal-ov').addEventListener('click', e => { if (e.target === document.getElementById('modal-ov')) closeModal(); });
+document.getElementById('pass-ov').addEventListener('click',  e => { if (e.target === document.getElementById('pass-ov'))  closePass(); });
+
+/* ── INIT ── */
+renderTabs();
+render();
+</script>
+</body>
+</html>
