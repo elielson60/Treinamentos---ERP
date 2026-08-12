@@ -560,58 +560,105 @@ let editId    = null;
 let activeCat = 'Todos';
 
 /* ── DADOS SEED ── */
-const SEED_VERSION = 4;
+const SEED_VERSION = 6;
 const SEED = [
   {
     id: 6,
     title: '1ª Apresentação do Sistema ERP Veica',
     url: 'https://drive.google.com/file/d/1pl3kTYUUMs6N5lE-kaC68I49Ggwu15Yi/view?usp=sharing',
     desc: 'Primeira apresentação oficial do sistema ERP Veica Tecnologia para a equipe de implantação',
-    cat: 'Geral', auth: 'Elielson', date: '2026-06-22',
-    tipo: 'video'
+    cat: 'Geral', auth: 'Elielson', date: '2026-06-22', tipo: 'video'
   },
   {
     id: 7,
     title: 'Docs Diversos — Materiais e PDFs',
     url: 'https://drive.google.com/drive/folders/1Kbnn865Rljv69P3aG2EuqQsH_6K4EfG_?usp=sharing',
     desc: 'Pasta com documentos diversos, manuais e materiais em PDF da implantação ERP Veica',
-    cat: 'Geral', auth: 'Elielson', date: '2026-06-22',
-    tipo: 'pasta'
+    cat: 'Geral', auth: 'Elielson', date: '2026-06-22', tipo: 'pasta'
   },
   {
     id: 1,
     title: '1º Treinamento Cargas — Martins Rent a Car',
     url: 'https://drive.google.com/file/d/1thQQvpfYmU0KBK7NDyVOaSxrU4A7EDGs/view?usp=sharing',
     desc: 'Gravação da primeira sessão de treinamento do módulo de Cargas',
-    cat: 'Cargas', auth: 'Marcio Venicius', date: '2026-06-15'
+    cat: 'Cargas', auth: 'Marcio Venicius', date: '2026-06-15', tipo: 'video'
   },
   {
     id: 2,
     title: '2º Treinamento Cargas — Martins Rent a Car',
     url: 'https://drive.google.com/file/d/1L1t_34towgxEA0KVxEWLGya_UldR93AB/view?usp=sharing',
     desc: 'Gravação da segunda sessão de treinamento do módulo de Cargas',
-    cat: 'Cargas', auth: 'Marcio Venicius', date: '2026-06-17'
+    cat: 'Cargas', auth: 'Marcio Venicius', date: '2026-06-17', tipo: 'video'
   },
   {
     id: 3,
     title: '1º Treinamento Frota — Martins Rent a Car',
-    url: 'https://drive.google.com/file/d/1c_JdBicOfhFLrDZ-t5aa_tN7RFC8zbs2/view?usp=sharing',
+    url: 'https://drive.google.com/file/d/1c_JdBicOfhFLrDZ-t5aa_tN7RFC8zbs2/view',
     desc: 'Gravação da primeira sessão de treinamento do módulo de Frotas',
-    cat: 'Frotas', auth: 'Marcio Venicius', date: '2026-06-16'
+    cat: 'Frotas', auth: 'Marcio Venicius', date: '2026-06-16', tipo: 'video'
   },
   {
     id: 4,
     title: '2º Treinamento Frota — Martins Rent a Car',
-    url: 'https://drive.google.com/file/d/1D5-mWx-ah8yMEznStoVNLJGP-dzmkKol/view?usp=sharing',
+    url: 'https://drive.google.com/file/d/1D5-mWx-ah8yMEznStoVNLJGP-dzmkKol/view',
     desc: 'Gravação da segunda sessão de treinamento do módulo de Frotas',
-    cat: 'Frotas', auth: 'Marcio Venicius', date: '2026-06-18'
+    cat: 'Frotas', auth: 'Marcio Venicius', date: '2026-06-18', tipo: 'video'
+  },
+  {
+    id: 13,
+    title: '3º Treinamento Frota — Martins Rent a Car',
+    url: 'https://drive.google.com/file/d/11ojOewvAV9_gM-qJn5usLXIeA941fUWs/view',
+    desc: 'Gravação da terceira sessão de treinamento do módulo de Frotas',
+    cat: 'Frotas', auth: 'Marcio Venicius', date: '2026-07-14', tipo: 'video'
+  },
+  {
+    id: 8,
+    title: '4º Treinamento Frota — Martins Rent a Car',
+    url: 'https://drive.google.com/file/d/1HDaZtVIn4ucLcppEXRYSEPFAtN6AzZbc/view',
+    desc: 'Gravação da quarta sessão de treinamento do módulo de Frotas',
+    cat: 'Frotas', auth: 'Marcio Venicius', date: '2026-07-21', tipo: 'video'
+  },
+  {
+    id: 9,
+    title: '5º Treinamento Frota — Martins Rent a Car',
+    url: 'https://drive.google.com/file/d/1uR53evEIRcBmgWAjyvnhiQQ7JGDV1t8Y/view',
+    desc: 'Gravação da quinta sessão de treinamento do módulo de Frotas',
+    cat: 'Frotas', auth: 'Marcio Venicius', date: '2026-07-23', tipo: 'video'
+  },
+  {
+    id: 10,
+    title: '6º Treinamento Frota — Martins Rent a Car',
+    url: 'https://drive.google.com/file/d/12u8zW_jOzYaWsoQUBlfZIduTO8PDrydB/view',
+    desc: 'Gravação da sexta sessão de treinamento do módulo de Frotas',
+    cat: 'Frotas', auth: 'Marcio Venicius', date: '2026-07-28', tipo: 'video'
+  },
+  {
+    id: 14,
+    title: '7º Treinamento Frota — Martins Rent a Car',
+    url: 'https://drive.google.com/file/d/1HqgCgSoa4SFK9mPicKB5fM1cGA5qin79/view',
+    desc: 'Gravação da sétima sessão de treinamento do módulo de Frotas',
+    cat: 'Frotas', auth: 'Marcio Venicius', date: '2026-08-01', tipo: 'video'
+  },
+  {
+    id: 11,
+    title: '9º Treinamento Frota — Martins Rent a Car',
+    url: 'https://drive.google.com/file/d/1kKPOdu33ZhNz5ZDs7Ta1spjdJZGhQlLU/view',
+    desc: 'Gravação da nona sessão de treinamento do módulo de Frotas',
+    cat: 'Frotas', auth: 'Marcio Venicius', date: '2026-08-06', tipo: 'video'
   },
   {
     id: 5,
     title: '2º Treinamento AG Financeiro — Martins Rent a Car',
     url: 'https://drive.google.com/file/d/1ENTofJU3u8PBCTgLncPUPS2IR0oUrjfK/view?usp=drive_link',
     desc: 'Gravação da segunda sessão de treinamento do módulo Financeiro (AG)',
-    cat: 'Financeiro', auth: 'Marcia Langbeck', date: '2026-06-18'
+    cat: 'Financeiro', auth: 'Marcia Langbeck', date: '2026-06-18', tipo: 'video'
+  },
+  {
+    id: 12,
+    title: '6º Treinamento AG Financeiro — Martins Rent a Car',
+    url: 'https://drive.google.com/file/d/1dRHHlCOH-lfOdMKwRxvPIlNJGB8vxiMt/view',
+    desc: 'Gravação da sexta sessão de treinamento do módulo Financeiro (AG)',
+    cat: 'Financeiro', auth: 'Marcia Langbeck', date: '2026-07-23', tipo: 'video'
   }
 ];
 
